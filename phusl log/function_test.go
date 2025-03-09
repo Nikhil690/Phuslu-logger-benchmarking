@@ -55,7 +55,7 @@ func doSomeTask() {
 	}
 
 	// Simulate intermediate processing steps
-	for i := 1; i <= 500000; i++ {
+	for i := 1; i <= 100000; i++ {
 		// time.Sleep(500 * time.Millisecond)
 
 		lm := logMessagePool.Get().(*LogMessage)
