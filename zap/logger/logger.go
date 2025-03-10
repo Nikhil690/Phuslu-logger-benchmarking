@@ -10,21 +10,23 @@ import (
 
 // Global logger variables
 var (
-	globalLogger *zap.Logger
-	MainLog      *zap.SugaredLogger
-	NfLog        *zap.SugaredLogger
-	InitLog      *zap.SugaredLogger
-	CfgLog       *zap.SugaredLogger
-	CtxLog       *zap.SugaredLogger
-	GinLog       *zap.SugaredLogger
-	SBILog       *zap.SugaredLogger
-	ConsumerLog  *zap.SugaredLogger
-	GsmLog       *zap.SugaredLogger
-	PfcpLog      *zap.SugaredLogger
-	PduSessLog   *zap.SugaredLogger
-	ChargingLog  *zap.SugaredLogger
-	UtilLog      *zap.SugaredLogger
-	NwdafLog     *zap.SugaredLogger
+	Log         *zap.Logger
+	NfLog         *zap.SugaredLogger
+	MainLog       *zap.SugaredLogger
+	InitLog       *zap.SugaredLogger
+	CfgLog        *zap.SugaredLogger
+	CtxLog        *zap.SugaredLogger
+	GinLog        *zap.SugaredLogger
+	SBILog        *zap.SugaredLogger
+	AmPolicyLog   *zap.SugaredLogger
+	BdtPolicyLog  *zap.SugaredLogger
+	ConsLog       *zap.SugaredLogger
+	CallLog       *zap.SugaredLogger
+	OamLog        *zap.SugaredLogger
+	PolicyAuthLog *zap.SugaredLogger
+	ProcLog       *zap.SugaredLogger
+	SmPolicyLog   *zap.SugaredLogger
+	UtilLog       *zap.SugaredLogger
 )
 
 // customLevelEncoder formats log levels with colors and even spacing
@@ -56,7 +58,7 @@ func customComponentEncoder(loggerName string, enc zapcore.PrimitiveArrayEncoder
 
 // Initialize initializes the global logger and component loggers
 func Initialize(logLevel zapcore.Level) {
-	if globalLogger != nil {
+	if Log != nil {
 		return
 	}
 
@@ -76,8 +78,8 @@ func Initialize(logLevel zapcore.Level) {
 	output := zapcore.Lock(os.Stdout)
 	core := zapcore.NewCore(customEncoder, output, logLevel)
 
-	globalLogger = zap.New(core)
-	sugaredLogger := globalLogger.Sugar()
+	Log = zap.New(core)
+	sugaredLogger := Log.Sugar()
 
 	// Initialize component loggers
 	MainLog = sugaredLogger.Named("MAIN")
@@ -87,28 +89,29 @@ func Initialize(logLevel zapcore.Level) {
 	CtxLog = sugaredLogger.Named("CTX")
 	GinLog = sugaredLogger.Named("GIN")
 	SBILog = sugaredLogger.Named("SBI")
-	ConsumerLog = sugaredLogger.Named("CONS")
-	GsmLog = sugaredLogger.Named("GSM")
-	PfcpLog = sugaredLogger.Named("PFCP")
-	PduSessLog = sugaredLogger.Named("SESS")
-	ChargingLog = sugaredLogger.Named("CHARGE")
+	ProcLog = sugaredLogger.Named("PROC")
 	UtilLog = sugaredLogger.Named("UTIL")
-	NwdafLog = sugaredLogger.Named("NWDAF")
-	PduSessLog = sugaredLogger.Named("SESS")
+	ConsLog = sugaredLogger.Named("CONS")
+	CallLog = sugaredLogger.Named("CALL")
+	OamLog = sugaredLogger.Named("OAM")
+	PolicyAuthLog = sugaredLogger.Named("POLICY_AUTH")
+	AmPolicyLog = sugaredLogger.Named("AM_POLICY")
+	BdtPolicyLog = sugaredLogger.Named("BDT_POLICY")
+	SmPolicyLog = sugaredLogger.Named("SM_POLICY")
 }
 
 // Logger provides access to the global structured logger
 func Logger() *zap.Logger {
-	if globalLogger == nil {
+	if Log == nil {
 		panic("Logger is not initialized. Call Initialize first.")
 	}
-	return globalLogger
+	return Log
 }
 
 // Sugar provides access to the global sugared logger
 func Sugar() *zap.SugaredLogger {
-	if globalLogger == nil {
+	if Log == nil {
 		panic("Logger is not initialized. Call Initialize first.")
 	}
-	return globalLogger.Sugar()
+	return Log.Sugar()
 }
