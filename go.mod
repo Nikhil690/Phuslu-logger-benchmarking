@@ -1,4 +1,4 @@
-module github.com/Nikhil690/bench
+module github.com/Nikhil690/Phuslu-logger-benchmarking
 
 go 1.24.0
 
