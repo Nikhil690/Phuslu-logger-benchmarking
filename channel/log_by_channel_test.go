@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Nikhil690/bench/logger"
+	"github.com/Nikhil690/Phuslu-logger-benchmarking/logger"
 	"fmt"
 	"sync"
 	"testing"
